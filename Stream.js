@@ -28,6 +28,9 @@
             } while(typeof(chType) === 'undefined' && this.index < this.text.length);
 
             if(this.index >= this.text.length){
+                if(output.length > 0){
+                    return {  type: 'TEXT', token: output };
+                }
                 return { type: 'EOF', token: '' };
             }
             else if(output.length === 0){

@@ -24,7 +24,18 @@
         'TITLE' : function(data){ return data['title'] ? data['title'].toUpperCase() : undefined; },
 
         'year' : function(data){ return data['year']; },
-        'yr' : function(data){ return ('00' + (parseInt(data['year']) % 100)).slice(-2); }
+        'yr' : function(data){ return ('00' + (parseInt(data['year']) % 100)).slice(-2); },
+
+        'journal' : function(data){ return data['journal']; },
+        'volume' : function(data){ return data['volume']; },
+        'pg' : {
+            'start' : function(data){ return data['pg'] ? data['pg']['start'] : undefined; },
+            'end' : function(data){ return data['pg'] ? data['pg']['end'] : undefined; },
+        },
+
+        'publisher' : function(data){ return data['publisher'] ? data['publisher'].toLowerCase() : undefined; },
+        'Publisher' : function(data){ return data['publisher'] ? capitalize(data['publihser']) : undefined; },
+        'PUBLISHER' : function(data){ return data['publisher'] ? data['publisher'].toUpperCase() : undefined; }
     };
 
     var capitalize = function(str){

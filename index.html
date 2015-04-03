@@ -8,9 +8,18 @@
 <script>
 var formatString = '\\bibitem<blah> [@{au.F},~@{au.Von}.,~@{au.Last}|No title provided]';
 
-var name = '[[@{au.F}.~[@{au.V}.~]]@{au.Last}]';
-console.log(BiblioTeX.evaluate(BiblioTeX.parse(name), { 'author' : { 'first' : 'Andrew', 'last' : 'Soffer' } }));
-
+var introLine = '\\bibitem\n'
+var name = '\t[[@{au.F}.~[@{au.V}.~]]@{au.Last}],\n';
+var title = '\t[@{Title},]\n';
+var journalLine = '[\t\\emph{@{journal}}[~\\textbf{@{volume}}][ (@{year})][ @{pg.start}--@{pg.end}].]';
+console.log(BiblioTeX.evaluate(BiblioTeX.parse(introLine + name + title + journalLine),
+            { 'author': { 'first' : 'Antonio', 'last' : 'Vera-L\\\'opez' },
+            'title': 'Conjugacy classes in Sylow $p$-subgroups of $\\mathop{GL}(n, q)$',
+            'journal': 'Linear Algebra Appl.',
+            'volume': 370,
+            'year': 2003,
+            'pg': {'start': 85, 'end': 124}
+            }));
 </script>
 </head>
 <body>
