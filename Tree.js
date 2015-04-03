@@ -1,23 +1,23 @@
 (function(BT){
     var dataGetter = {
         'au' : {
-            'f' : function(data){ return data['author'] && data['author']['first'] && data['author']['first'][0] ? data['author']['first'][0].toLowerCase() : undefined; },
-            'F' : function(data){ return data['author'] && data['author']['first'] && data['author']['first'][0] ? data['author']['first'][0].toUpperCase() : undefined; },
-            'first' : function(data){ return data['author'] && data['author']['first'] ? data['author']['first'].toLowerCase() : undefined; },
-            'First' : function(data){ return data['author'] && data['author']['first'] ? capitalize(data['author']['first']) : undefined; },
-            'FIRST' : function(data){ return data['author'] && data['author']['first'] ? data['author']['first'].toUpperCase() : undefined; },
+            'f' : function(data, num){ return data['author'] && data['author'][num] && data['author'][num]['first'] && data['author'][num]['first'][0] ? data['author'][num]['first'][0].toLowerCase() : undefined; },
+            'F' : function(data, num){ return data['author'] && data['author'][num] && data['author'][num]['first'] && data['author'][num]['first'][0] ? data['author'][num]['first'][0].toUpperCase() : undefined; },
+            'first' : function(data, num){ return data['author'] && data['author'][num] && data['author'][num]['first'] ? data['author'][num]['first'].toLowerCase() : undefined; },
+            'First' : function(datanum ){ return data['author'] && data['author'][num] && data['author'][num]['first'] ? capitalize(data['author'][num]['first']) : undefined; },
+            'FIRST' : function(datanum ){ return data['author'] && data['author'][num] && data['author'][num]['first'] ? data['author'][num]['first'].toUpperCase() : undefined; },
 
-            'v' : function(data){ return data['author'] && data['author']['von'] && data['author']['von'][0] ? data['author']['von'][0].toLowerCase() : undefined; },
-            'V' : function(data){ return data['author'] && data['author']['von'] && data['author']['von'][0] ? data['author']['von'][0].toUpperCase() : undefined; },
-            'von' : function(data){ return data['author'] && data['author']['von'] ? data['author']['von'].toLowerCase() : undefined; },
-            'Von' : function(data){ return data['author'] && data['author']['von'] ? capitalize(data['author']['von']) : undefined; },
-            'VON' : function(data){ return data['author'] && data['author']['von'] ? data['author']['von'].toUpperCase() : undefined; },
+            'v' : function(data, num){ return data['author'] && data['author'][num] && data['author'][num]['von'] && data['author'][num]['von'][0] ? data['author'][num]['von'][0].toLowerCase() : undefined; },
+            'V' : function(data, num){ return data['author'] && data['author'][num] && data['author'][num]['von'] && data['author'][num]['von'][0] ? data['author'][num]['von'][0].toUpperCase() : undefined; },
+            'von' : function(data, num){ return data['author'] && data['author'][num] && data['author'][num]['von'] ? data['author'][num]['von'].toLowerCase() : undefined; },
+            'Von' : function(data, num){ return data['author'] && data['author'][num] && data['author'][num]['von'] ? capitalize(data['author'][num]['von']) : undefined; },
+            'VON' : function(data, num){ return data['author'] && data['author'][num] && data['author'][num]['von'] ? data['author'][num]['von'].toUpperCase() : undefined; },
 
-            'l' : function(data){ return data['author'] && data['author']['last'] && data['author']['last'][0] ? data['author']['last'][0].toLowerCase() : undefined; },
-            'L' : function(data){ return data['author'] && data['author']['last'] && data['author']['last'][0] ? data['author']['last'][0].toUpperCase() : undefined; },
-            'last' : function(data){ return data['author'] && data['author']['last'] ? data['author']['last'].toLowerCase() : undefined; },
-            'Last' : function(data){ return data['author'] && data['author']['last'] ? capitalize(data['author']['last']) : undefined; },
-            'LAST' : function(data){ return data['author'] && data['author']['last'] ? data['author']['last'].toUpperCase() : undefined; },
+            'l' : function(data, num){ return data['author'] && data['author'][num] && data['author'][num]['last'] && data['author'][num]['last'][0] ? data['author'][num]['last'][0].toLowerCase() : undefined; },
+            'L' : function(data, num){ return data['author'] && data['author'][num] && data['author'][num]['last'] && data['author'][num]['last'][0] ? data['author'][num]['last'][0].toUpperCase() : undefined; },
+            'last' : function(data, num){ return data['author'] && data['author'][num] && data['author'][num]['last'] ? data['author'][num]['last'].toLowerCase() : undefined; },
+            'Last' : function(data, num){ return data['author'] && data['author'][num] && data['author'][num]['last'] ? capitalize(data['author'][num]['last']) : undefined; },
+            'LAST' : function(data, num){ return data['author'] && data['author'][num] && data['author'][num]['last'] ? data['author'][num]['last'].toUpperCase() : undefined; },
         },
         'title' : function(data){ return data['title'] ? data['title'].toLowerCase() : undefined; },
         'Title' : function(data){ return data['title'] ? capitalize(data['title']) : undefined; },
@@ -96,15 +96,26 @@
         if(typeof(root.data) !== 'undefined'){
             var path = root.data.split('.');
             var x = dataGetter;
+            var num = -1;
 
             for(var i = 0; i < path.length; ++i){
+                if(path[i].slice(0,2) === 'au'){
+                    var match = path[i].match(/au\[(\d+)\]$/);
+                    if(match === null){
+                        console.error('invalid author');
+                    }
+                    num = parseInt(match[1]);
+                    path[i] = 'au';
+                }
+
                 x = x[ path[i] ];
                 if(typeof(x) === 'undefined'){
                     return undefined;
                 }
             }
 
-            return x(data);
+            //num is only used for the author command. it is otherwise ignored
+            return x(data, num);
         }
 
         if(root.conditional){
