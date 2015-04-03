@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>-->
+<script src="Stream.js"></script>
+<script src="Tree.js"></script>
+
+<script>
+var formatString = '\\bibitem<blah> [@{au.F},~@{au.Von}.,~@{au.Last}|No title provided]';
+
+var name = '[[@{au.F}.~[@{au.V}.~]]@{au.Last}]';
+console.log(BiblioTeX.evaluate(BiblioTeX.parse(name), { 'author' : { 'first' : 'Andrew', 'last' : 'Soffer' } }));
+
+</script>
+</head>
+<body>
+</body>
+</html>
