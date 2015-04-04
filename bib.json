@@ -18,7 +18,8 @@
         "pg": {
             "start": 85,
             "end": 124
-        }
+        },
+        "key": "vla2003conjugacy"
     },
 
     {
@@ -36,7 +37,8 @@
         "pg": {
             "start": 708,
             "end": 730
-        }
+        },
+        "key": "isaacs1995characters"
     }
 
 ]
