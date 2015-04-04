@@ -13,16 +13,24 @@
 #authors:
 #firstAuthor[, #secondAuthor, and #thirdAuthor| and #secondAuthor],
 
-#title:
-[@{Title},]
+#authorInitials:
+@{au[0].L}[@{au[1].L}[@{au[2].L}]]
 
 #journal:
 [\emph{@{journal}}[~\textbf{@{volume}}][ (@{year})][ @{pg.start}--@{pg.end}].]
 
+#bibitem:
+\bibitem\[#authorInitials\]{@{key}}
 
 #article:
-\bibitem\[\]{@{key}}
- [  #authors
-][   #title
-][   #journal
-]
+#bibitem
+    [#authors]
+    [@{Title}]
+    [#journal]
+
+#book:
+#bibitem
+   [#authors]
+   [\emph{@{Title}},]
+   [@{Publisher}, ][@{year}].
+

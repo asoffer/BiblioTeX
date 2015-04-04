@@ -10,7 +10,7 @@ var completions = 0;
 var inputData;
 $.ajax({
             type: 'GET',
-            url: 'test.btx',
+            url: 'html.btx',
             success: function(data, textStatus, request){
                 BiblioTeX.preprocess(data);
                 ++completions;

@@ -48,7 +48,7 @@
     BT.macros = {};
 
     BT.preprocess = function(str){
-        var splitStr = ('\n\n' + str).split(/\n\n+\s*#([a-zA-z0-9]+):\n/);
+        var splitStr = ('\n\n' + str).replace(/\s*$/,'').split(/\n\n+\s*#([a-zA-z0-9]+):\n/);
         //if you find \n\n in one of the strings somewhere, you know there's a mistake
         for(var i = 0; i < splitStr.length; ++i){
             if(splitStr[i].match(/\n\n/) !== null){
