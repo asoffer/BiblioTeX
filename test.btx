@@ -1,15 +1,27 @@
-#title:
-	[@{Title},]
+#firstAuthor:
+[@{au[0].F}.~[@{au[0].V}.~]]@{au[0].Last}
 
-#author:
-	[[@{au.F}.~[@{au.V}.~]]@{au.Last}],
+#secondAuthor:
+[@{au[1].F}.~[@{au[1].V}.~]]@{au[1].Last}
+
+#thirdAuthor:
+[@{au[2].F}.~[@{au[2].V}.~]]@{au[2].Last}
+
+#fourthAuthor:
+[@{au[3].F}.~[@{au[3].V}.~]]@{au[3].Last}
+
+#authors:
+#firstAuthor[, #secondAuthor, and #thirdAuthor| and #secondAuthor]
+
+#title:
+[@{Title},]
 
 #journal:
-	[\emph{@{journal}}[~\textbf{@{volume}}][ (@{year})][ @{pg.start}--@{pg.end}].]
+[\emph{@{journal}}[~\textbf{@{volume}}][ (@{year})][ @{pg.start}--@{pg.end}].]
 
 
 #article:
 \bibitem
-	#author
+	#authors
 	#title
 	#journal
