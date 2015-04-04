@@ -19,14 +19,26 @@
             var chType;
 
             do{
-                output += ch;
+                if(ch === '\\'){
+                    var nextCh = this.text[this.index + 1];
 
-                if(ch === '@' || ch === '#') break;
+                    if(typeof(nextCh) !== 'undefined' && typeof(special[nextCh]) !== 'undefined'){
+                        ++this.index;
+                        ch = nextCh;
+                    }
 
-                ++this.index;
-                ch = this.text[this.index];
-                chType = special[ch];
+                    output += ch;
+                    ++this.index;
+                    ch = this.text[this.index];
+                }
+                else{
+                    output += ch;
+                    ++this.index;
+                    ch = this.text[this.index];
+                    chType = special[ch];
+                }
             } while(typeof(chType) === 'undefined' && this.index < this.text.length);
+
 
             if(this.index >= this.text.length){
                 if(output.length > 0){

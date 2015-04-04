@@ -35,7 +35,10 @@
 
         'publisher' : function(data){ return data['publisher'] ? data['publisher'].toLowerCase() : undefined; },
         'Publisher' : function(data){ return data['publisher'] ? capitalize(data['publihser']) : undefined; },
-        'PUBLISHER' : function(data){ return data['publisher'] ? data['publisher'].toUpperCase() : undefined; }
+        'PUBLISHER' : function(data){ return data['publisher'] ? data['publisher'].toUpperCase() : undefined; },
+
+        'key' : function(data){ return data['key']; }
+
     };
 
     var capitalize = function(str){
