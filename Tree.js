@@ -105,6 +105,7 @@
                 break;
             }
             else{
+                console.log(tk);
                 throw 'What happened?';
             }
         }

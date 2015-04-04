@@ -11,7 +11,7 @@
 [@{au[3].F}.~[@{au[3].V}.~]]@{au[3].Last}
 
 #authors:
-#firstAuthor[, #secondAuthor, and #thirdAuthor| and #secondAuthor]
+#firstAuthor[, #secondAuthor, and #thirdAuthor| and #secondAuthor],
 
 #title:
 [@{Title},]
@@ -22,6 +22,7 @@
 
 #article:
 \bibitem\[\]{@{key}}
-	#authors
-	#title
-	#journal
+ [  #authors
+][   #title
+][   #journal
+]

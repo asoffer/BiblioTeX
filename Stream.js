@@ -5,6 +5,8 @@
         ']' : 'END_COND',
         '@' : 'DATA',
         '#' : 'MACRO',
+        '%' : 'COMMENT',
+        '\\' : 'ESCAPE'
     };
 
     BT.Stream = function(str){
@@ -17,27 +19,32 @@
             var output = '';
             var ch = '';
             var chType;
+            var escaped = false;
 
             do{
-                if(ch === '\\'){
-                    var nextCh = this.text[this.index + 1];
-
-                    if(typeof(nextCh) !== 'undefined' && typeof(special[nextCh]) !== 'undefined'){
-                        ++this.index;
-                        ch = nextCh;
+                if(escaped){
+                    if(typeof(special[ch]) === 'undefined'){
+                        output += '\\';
                     }
-
+                    //log the escaped character regardless
+                    escaped = false;
                     output += ch;
-                    ++this.index;
-                    ch = this.text[this.index];
+                }
+                else if(ch === '\\'){
+                    //don't log anything just yet
+                    escaped = true;
                 }
                 else{
                     output += ch;
-                    ++this.index;
-                    ch = this.text[this.index];
-                    chType = special[ch];
                 }
-            } while(typeof(chType) === 'undefined' && this.index < this.text.length);
+
+                ch = this.text[++this.index];
+                chType = special[ch];
+                if(chType === 'ESCAPE'){
+                    chType = undefined;
+                }
+
+            } while(escaped || (typeof(chType) === 'undefined' && this.index < this.text.length));
 
 
             if(this.index >= this.text.length){
@@ -47,7 +54,19 @@
                 return { type: 'EOF', token: '' };
             }
             else if(output.length === 0){
-                if(ch === '@'){
+                if(ch === '%'){
+                    while(this.index < this.text.length && this.text[this.index++] !== '\n');
+                    if(this.text.length === this.index){
+                        return { type: 'EOF', token: '' };
+                    }
+
+                    --this.index;
+                    var tk = this.next();
+                    tk.token = '\n' + tk.token;
+
+                    return tk;
+                }
+                else if(ch === '@'){
                     //we expect a '{'
                     ch = this.text[++this.index];
                     if(ch !== '{'){
@@ -88,6 +107,7 @@
                 }
             }
             else{
+                //if you get here, output the string
                 --this.index;
                 return { type: 'TEXT', token: output };
             }
