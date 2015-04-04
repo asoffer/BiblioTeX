@@ -1,21 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!--<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>-->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="Stream.js"></script>
 <script src="Tree.js"></script>
 
 <script>
-var defns ='\n#title:\n\t[@{Title},]\n\n#author:\n\t[[@{au.F}.~[@{au.V}.~]]@{au.Last}],\n\n#journal:\n\t[[@{au.F}.~[@{au.V}.~]]@{au.Last}],\n\n\n\n#article:\n\\bibitem\n\t#author\n\t#title\n\t#journal';
-BiblioTeX.preprocess(defns);
-console.log(BiblioTeX.evaluate(BiblioTeX.parse('#article'),
-            { 'author': { 'first' : 'Antonio', 'last' : 'Vera-L\\\'opez' },
-            'title': 'Conjugacy classes in Sylow $p$-subgroups of $\\mathop{GL}(n, q)$',
-            'journal': 'Linear Algebra Appl.',
-            'volume': 370,
-            'year': 2003,
-            'pg': {'start': 85, 'end': 124}
-            }));
+var completions = 0;
+var inputData;
+$.ajax({
+            type: 'GET',
+            url: 'test.btx',
+            success: function(data, textStatus, request){
+                BiblioTeX.preprocess(data);
+                ++completions;
+            }
+        });
+
+var jqxhr = $.getJSON( "bib.json", function(data) {
+        console.log( "success" );
+        inputData = data;
+        ++completions;
+        })
+.done(function() {
+        console.log( "second success" );
+        })
+.fail(function( jqxhr, textStatus, error ) {
+    var err = textStatus + ", " + error;
+    console.log( "Request Failed: " + err );
+});
+
+
+
+//BiblioTeX.evaluate(BiblioTeX.parse('#article', inputData));
+
 </script>
 </head>
 <body>

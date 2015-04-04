@@ -1,0 +1,33 @@
+[
+    {
+        "author": {
+            "first" : "Antonio",
+            "last" : "Vera-L\\'opez"
+        },
+        "title": "Conjugacy classes in Sylow $p$-subgroups of $\\mathop{GL}(n, q)$",
+        "journal": "Linear Algebra Appl.",
+        "volume": 370,
+        "year": 2003,
+        "pg": {
+            "start": 85,
+            "end": 124
+        }
+    },
+
+    {
+        "author": {
+            "first" : "Martin",
+            "last" : "Isaacs"
+        },
+        "title": "Characters of groups associated with finite algebras",
+        "journal": "Journal of Algebra",
+        "volume": 177,
+        "year": 1995,
+        "number": 3,
+        "pg": {
+            "start": 708,
+            "end": 730
+        }
+    }
+
+]

@@ -5,7 +5,7 @@
 	[[@{au.F}.~[@{au.V}.~]]@{au.Last}],
 
 #journal:
-	[[@{au.F}.~[@{au.V}.~]]@{au.Last}],
+	[\emph{@{journal}}[~\textbf{@{volume}}][ (@{year})][ @{pg.start}--@{pg.end}].]
 
 
 #article:
