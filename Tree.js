@@ -42,6 +42,8 @@
         return str.length === 0 ? '' : str.charAt(0).toUpperCase() + str.slice(1);
     }
 
+    BT.macros = {};
+
     BT.parse = function(str){
         var root = { parent: null, conditional: false, children: []};
 
@@ -69,6 +71,11 @@
             }
             else if(tk.type === 'END_COND'){
                 cNode = cNode.parent.parent;
+            }
+            else if(tk.type === 'MACRO'){
+                var n = BT.parse(BT.macros[tk.token]);
+                cNode.children.push(n);
+                n.parent = cNode;
             }
             else if(tk.type === 'DATA'){
                 cNode.children.push({ parent: cNode, conditional: false, data: tk.token, children: [] });

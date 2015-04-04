@@ -8,11 +8,12 @@
 <script>
 var formatString = '\\bibitem<blah> [@{au.F},~@{au.Von}.,~@{au.Last}|No title provided]';
 
-var introLine = '\\bibitem\n'
-var name = '\t[[@{au.F}.~[@{au.V}.~]]@{au.Last}],\n';
-var title = '\t[@{Title},]\n';
-var journalLine = '[\t\\emph{@{journal}}[~\\textbf{@{volume}}][ (@{year})][ @{pg.start}--@{pg.end}].]';
-console.log(BiblioTeX.evaluate(BiblioTeX.parse(introLine + name + title + journalLine),
+BiblioTeX.macros['name'] = '\t[[@{au.F}.~[@{au.V}.~]]@{au.Last}],';
+BiblioTeX.macros['title'] = '\t[@{Title},]';
+BiblioTeX.macros['intro'] = '\\bibitem';
+BiblioTeX.macros['journal'] = '[\t\\emph{@{journal}}[~\\textbf{@{volume}}][ (@{year})][ @{pg.start}--@{pg.end}].]';
+BiblioTeX.macros['article'] = '#intro\n#name\n#title\n#journal';
+console.log(BiblioTeX.evaluate(BiblioTeX.parse('#article'),
             { 'author': { 'first' : 'Antonio', 'last' : 'Vera-L\\\'opez' },
             'title': 'Conjugacy classes in Sylow $p$-subgroups of $\\mathop{GL}(n, q)$',
             'journal': 'Linear Algebra Appl.',
