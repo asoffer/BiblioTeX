@@ -1,0 +1,15 @@
+#title:
+	[@{Title},]
+
+#author:
+	[[@{au.F}.~[@{au.V}.~]]@{au.Last}],
+
+#journal:
+	[[@{au.F}.~[@{au.V}.~]]@{au.Last}],
+
+
+#article:
+\bibitem
+	#author
+	#title
+	#journal

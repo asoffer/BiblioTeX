@@ -6,13 +6,8 @@
 <script src="Tree.js"></script>
 
 <script>
-var formatString = '\\bibitem<blah> [@{au.F},~@{au.Von}.,~@{au.Last}|No title provided]';
-
-BiblioTeX.macros['name'] = '\t[[@{au.F}.~[@{au.V}.~]]@{au.Last}],';
-BiblioTeX.macros['title'] = '\t[@{Title},]';
-BiblioTeX.macros['intro'] = '\\bibitem';
-BiblioTeX.macros['journal'] = '[\t\\emph{@{journal}}[~\\textbf{@{volume}}][ (@{year})][ @{pg.start}--@{pg.end}].]';
-BiblioTeX.macros['article'] = '#intro\n#name\n#title\n#journal';
+var defns ='\n#title:\n\t[@{Title},]\n\n#author:\n\t[[@{au.F}.~[@{au.V}.~]]@{au.Last}],\n\n#journal:\n\t[[@{au.F}.~[@{au.V}.~]]@{au.Last}],\n\n\n\n#article:\n\\bibitem\n\t#author\n\t#title\n\t#journal';
+BiblioTeX.preprocess(defns);
 console.log(BiblioTeX.evaluate(BiblioTeX.parse('#article'),
             { 'author': { 'first' : 'Antonio', 'last' : 'Vera-L\\\'opez' },
             'title': 'Conjugacy classes in Sylow $p$-subgroups of $\\mathop{GL}(n, q)$',
