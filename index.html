@@ -1,27 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!--<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>-->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="Stream.js"></script>
 <script src="Tree.js"></script>
 
 <script>
-var formatString = '\\bibitem<blah> [@{au.F},~@{au.Von}.,~@{au.Last}|No title provided]';
+var completions = 0;
+var inputData;
+$.ajax({
+            type: 'GET',
+            url: 'test.btx',
+            success: function(data, textStatus, request){
+                BiblioTeX.preprocess(data);
+                ++completions;
+            }
+        });
 
-var introLine = '\\bibitem\n'
-var name0 = '[@{au[0].F}.~[@{au[0].V}.~]]@{au[0].Last}';
-var name1 = '[@{au[1].F}.~[@{au[1].V}.~]]@{au[1].Last}';
-var names = '\t[' + name0 + '[ and ' + name1 + '],\n]';
-var title = '\t[@{Title},]\n';
-var journalLine = '[\t\\emph{@{journal}}[~\\textbf{@{volume}}][ (@{year})][ @{pg.start}--@{pg.end}].]';
-console.log(BiblioTeX.evaluate(BiblioTeX.parse(introLine + names + title + journalLine),
-            { 'author': [{ 'first' : 'Antonio', 'last' : 'Vera-L\\\'opez' }, { 'first' : 'J', 'von' : 'M', 'last': 'Arregi' }],
-            'title': 'Conjugacy classes in Sylow $p$-subgroups of $\\mathop{GL}(n, q)$',
-            'journal': 'Linear Algebra Appl.',
-            'volume': 370,
-            'year': 2003,
-            'pg': {'start': 85, 'end': 124}
-            }));
+var jqxhr = $.getJSON( "bib.json", function(data) {
+        console.log( "success" );
+        inputData = data;
+        ++completions;
+        })
+.done(function() {
+        console.log( "second success" );
+        })
+.fail(function( jqxhr, textStatus, error ) {
+    var err = textStatus + ", " + error;
+    console.log( "Request Failed: " + err );
+});
+
 </script>
 </head>
 <body>

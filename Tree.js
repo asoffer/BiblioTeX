@@ -42,7 +42,24 @@
         return str.length === 0 ? '' : str.charAt(0).toUpperCase() + str.slice(1);
     }
 
+    BT.macros = {};
+
+    BT.preprocess = function(str){
+        var splitStr = ('\n\n' + str).split(/\n\n+\s*#([a-zA-z0-9]+):\n/);
+        //if you find \n\n in one of the strings somewhere, you know there's a mistake
+        for(var i = 0; i < splitStr.length; ++i){
+            if(splitStr[i].match(/\n\n/) !== null){
+                console.error('Format string not in definition');
+                return '';
+            }
+        }
+        for(var i = 1; i < splitStr.length; i += 2){
+            BT.macros[ splitStr[i] ] = splitStr[i + 1];
+        }
+    }
+
     BT.parse = function(str){
+        var currentMacro = '';
         var root = { parent: null, conditional: false, children: []};
 
         var cNode = root;
@@ -69,6 +86,14 @@
             }
             else if(tk.type === 'END_COND'){
                 cNode = cNode.parent.parent;
+            }
+            else if(tk.type === 'MACRO'){
+                var n = BT.parse(BT.macros[tk.token]);
+                cNode.children.push(n);
+                n.parent = cNode;
+            }
+            else if(tk.type === 'DEF'){
+                currentMacro = tk.token;
             }
             else if(tk.type === 'DATA'){
                 cNode.children.push({ parent: cNode, conditional: false, data: tk.token, children: [] });

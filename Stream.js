@@ -4,6 +4,7 @@
         '|' : 'NEXT_COND',
         ']' : 'END_COND',
         '@' : 'DATA',
+        '#' : 'MACRO',
     };
 
     BT.Stream = function(str){
@@ -20,7 +21,7 @@
             do{
                 output += ch;
 
-                if(ch === '@') break;
+                if(ch === '@' || ch === '#') break;
 
                 ++this.index;
                 ch = this.text[this.index];
@@ -54,6 +55,22 @@
 
                     return { type: 'DATA', token: output };
                 }
+                else if(ch === '#'){
+                    while(++this.index < this.text.length && this.text[this.index].match(/[a-zA-Z0-9]+/) !== null){
+                        output += this.text[this.index];
+                    }
+                    
+                    if(this.index >= this.text.length){
+                        return { type: 'MACRO', token: output };
+                    }
+
+                    if(this.text[this.index] === ':'){
+                        return { type: 'DEF', token: output };
+                    }
+
+                    --this.index;
+                    return { type: 'MACRO', token: output };
+                }
                 else{
                     return { type: special[ch], token: ch };
                 }
@@ -65,5 +82,3 @@
         }
     };
 })(window.BiblioTeX = window.BiblioTeX || {});
-
-

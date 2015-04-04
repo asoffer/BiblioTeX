@@ -1,0 +1,15 @@
+#title:
+	[@{Title},]
+
+#author:
+	[[@{au.F}.~[@{au.V}.~]]@{au.Last}],
+
+#journal:
+	[\emph{@{journal}}[~\textbf{@{volume}}][ (@{year})][ @{pg.start}--@{pg.end}].]
+
+
+#article:
+\bibitem
+	#author
+	#title
+	#journal
