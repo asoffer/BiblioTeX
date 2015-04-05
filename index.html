@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="Stream.js"></script>
 <script src="Tree.js"></script>
@@ -9,13 +11,13 @@
 var completions = 0;
 var inputData;
 $.ajax({
-            type: 'GET',
-            url: 'html.btx',
-            success: function(data, textStatus, request){
-                BiblioTeX.preprocess(data);
-                ++completions;
-            }
-        });
+type: 'GET',
+url: 'html.btx',
+success: function(data, textStatus, request){
+BiblioTeX.preprocess(data);
+++completions;
+}
+});
 
 var jqxhr = $.getJSON( "bib.json", function(data) {
         console.log( "success" );
@@ -26,12 +28,87 @@ var jqxhr = $.getJSON( "bib.json", function(data) {
         console.log( "second success" );
         })
 .fail(function( jqxhr, textStatus, error ) {
-    var err = textStatus + ", " + error;
-    console.log( "Request Failed: " + err );
-});
+        var err = textStatus + ", " + error;
+        console.log( "Request Failed: " + err );
+        });
 
 </script>
 </head>
 <body>
+<div class="jumbotron">
+    <h1>BiblioTeX <small>An alternative to BibTeX</small></h1>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <p>Bibliographic data is stored in and retrieved from a JSON file.
+            In the future, we plan to add features allowing you to import your existing BibTeX database.
+            We also plan to allow data retrieval from <a href="https://scholar.google.com">Google Scholar</a>.
+            </p>
+
+            <h2>Usage</h2>
+            <h4>Data access</h4>
+            <p>BiblioTeX formatting is relatively straightforward.
+            One of the main benefits of BiblioTeX over BibTeX style files is the simplicity in design.
+            At it's core, BiblioTeX is nothing more than a fancy templating engine.
+            The main data-replacement mechanism is <code>@{...}</code>.
+            This construct looks up data from the database and, if the data exists, inserts it.
+            For example:
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Input:</h5>
+                    <pre>The book "@{Title}" was published in @{year}.</pre>
+                </div>
+                <div class="col-md-6">
+                    <h5>Output:</h5>
+                    <pre>The book "The Adventures Of Huckleberry Finn" was published in 1885.</pre>
+                </div>
+            </div>
+
+            <p>A full list of all data options is provided <a href="">here</a>.</p>
+
+            <h4>Data formatting</h4>
+            <p>Data formatting is also addressed in the <a href="">list of all data options</a> mentioned above.
+            As a general rule, formatting is expressed by analogy on the access-key.
+            For example, <code>@{year}</code> displays the year in a 4-digit format, whereas <code>@{yr}</code> displays the year in a 2-digit format.
+            The commands <code>@{title}</code>, <code>@{Title}</code>, and <code>@{TITLE}</code> display the title in lowercase, with words capitalized, and in all upper-case respectively.
+            </p>
+
+            <h4>Conditions</h4>
+            <p>Sometimes data is not available, and output needs to display correctly anyways.
+            BiblioTeX uses <code>[...]</code> to express conditionals.
+            If any data provided inside brackets is not defined, the entire bracketed expression results in the empty string.</p>
+            For instance, <code>[@{Title} (@{year})]</code> will display nothing, unless both the title and the year are both provided.</p>
+
+            <p>Sometimes it is preferable to display one string if data is available, and a default otherwise.
+            This is achieved with with the <code>[...|...]</code> construct.
+            For example, <code>[@{title}|No title provided]</code> will display the title of the document if it is provided, and "No title provided" otherwise.
+            The original <code>[...]</code> construct is just shorthand for <code>[...|]</code>.
+            You can also create longer chains by simply adding more pipes, as in <code>[...|...|...]</code>.
+            BiblioTeX will choose the first one for which all the necessary data is provided, or displays the empty string.</p>
+
+            <h4>Macros</h4>
+            <p>You can (and should) define macros to reuse formatting strings you have already written.
+            The basic syntax for defining macros is:</p>
+            <pre>#title:
+[@{title}| No title provided]
+
+</pre>
+
+<p>The newline at the end of the declaration is important.
+That is how BiblioTeX knows when the macro definition has been completed.</p>
+
+<h4>Comments</h4>
+Comments are expressed with the "%" symbol, as it is in \(\LaTeX\).
+
+<h4>Escaping characters</h4>
+<p>To display the characters "[", "|", "]", "@", "#", and "%", you must escape them with a backslash (for example, "\@").
+If a backslash precedes a non-escapable character, it will simply be displayed as a backslash.
+This can cause a problem, if you intend to dislpay a backslash, followed by an escapable character.
+To deal with this, the character "\" can also be escaped, as in "\\".</p>
+        </div>
+    </div>
+</div>
 </body>
 </html>
