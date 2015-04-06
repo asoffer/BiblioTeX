@@ -34,7 +34,7 @@
         },
 
         'publisher' : function(data){ return data['publisher'] ? data['publisher'].toLowerCase() : undefined; },
-        'Publisher' : function(data){ return data['publisher'] ? capitalize(data['publihser']) : undefined; },
+        'Publisher' : function(data){ return data['publisher'] ? capitalize(data['publisher']) : undefined; },
         'PUBLISHER' : function(data){ return data['publisher'] ? data['publisher'].toUpperCase() : undefined; },
 
         'key' : function(data){ return data['key']; }
@@ -62,6 +62,10 @@
     }
 
     BT.parse = function(str){
+        if(typeof(str) === 'undefined'){
+            return undefined;
+        }
+
         var currentMacro = '';
         var root = { parent: null, conditional: false, children: []};
 
@@ -115,6 +119,14 @@
         }
 
         return root;
+    };
+
+    BT.createBibItem = function(data){
+        if(typeof(BT.macros[ data['doctype'] ]) === 'undefined'){
+            console.error('Unknown document type');
+            return '';
+        }
+        return BT.evaluate(BT.parse('#' + data['doctype']), data);
     };
 
     BT.evaluate = function(root, data){

@@ -1,5 +1,6 @@
 [
     {
+        "doctype": "article",
         "author": [
             {
                 "first" : "Antonio",
@@ -23,6 +24,7 @@
     },
 
     {
+        "doctype": "article",
         "author": [
             {
                 "first" : "Martin",
@@ -39,5 +41,20 @@
             "end": 730
         },
         "key": "isaacs1995characters"
+    },
+
+    {
+        "doctype": "book",
+        "author": [
+            {
+                "first" : "Saunders",
+                "last" : "Mac Lane"
+            }
+        ],
+        "title": "Categories for the working mathematician",
+        "publisher": "Springer",
+        "year": 1998,
+        "volume": 5,
+        "key": "mac1998categories"
     }
 ]

@@ -31,3 +31,11 @@
     [@{Title}<br/>]
     [#journal]
 </dd>
+
+#book:
+#bibitem
+<dd>
+    [#authors<br/>]
+    [<em>@{Title}</em>,[ Vol.&nbsp;@{volume},]<br/>]%if the title isn't provided, don't do anything
+    [@{Publisher}[, @{year}].]
+</dd>
