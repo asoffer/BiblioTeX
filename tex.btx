@@ -1,20 +1,25 @@
-#firstAuthor:
+#author1:
 [@{au[0].F}.~[@{au[0].V}.~]]@{au[0].Last}
 
-#secondAuthor:
+#author2:
 [@{au[1].F}.~[@{au[1].V}.~]]@{au[1].Last}
 
-#thirdAuthor:
+#author3:
 [@{au[2].F}.~[@{au[2].V}.~]]@{au[2].Last}
 
-#fourthAuthor:
-[@{au[3].F}.~[@{au[3].V}.~]]@{au[3].Last}
-
 #authors:
-#firstAuthor[, #secondAuthor, and #thirdAuthor| and #secondAuthor],
+[?{au[3].L}#author1 et.&nbsp;al,%
+|?{au[2].L}#author1, #author2, and #author3,%
+|?{au[1].L}#author1 and #author2,%
+|?{au[0].L}#author1,%
+]?{au[0].L}
 
 #authorInitials:
-@{au[0].L}[@{au[1].L}[@{au[2].L}]]
+[?{au[3].L}@{au[0].L}${}^{+}$%
+|?{au[2].L}@{au[0].L}@{au[1].L}@{au[2].L}%
+|?{au[1].L}@{au[0].L}@{au[1].L}%
+|?{au[0].L}@{au[0].L}%
+]
 
 #journal:
 [\emph{@{journal}}[~\textbf{@{volume}}][ (@{year})][ @{pg.start}--@{pg.end}].]
@@ -22,14 +27,30 @@
 #bibitem:
 \bibitem\[#authorInitials\]{@{key}}
 
+#pubLine:
+[@{Publisher}[, @{year}].|@{year}.]
+
 #article:
 #bibitem
-    [#authors]
-    [@{Title}]
-    [#journal]
+[    #authors
+][    @{Title}
+][    #journal%
+]
 
 #book:
 #bibitem
-   [#authors]
-   [\emph{@{Title}},]
-   [@{Publisher}, ][@{year}].
+[    #authors
+][    \emph{@{Title}},
+]    #pubLine
+
+#inproceedings:
+blahinproc
+
+#phdthesis:
+blahphd
+
+#misc:
+blahmisc
+
+#incollection:
+blahincollection

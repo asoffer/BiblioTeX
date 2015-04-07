@@ -4,6 +4,7 @@
         '|' : 'NEXT_COND',
         ']' : 'END_COND',
         '@' : 'DATA',
+        '?' : 'HAS_DATA',
         '#' : 'MACRO',
         '%' : 'COMMENT',
         '\\' : 'ESCAPE'
@@ -66,11 +67,12 @@
 
                     return tk;
                 }
-                else if(ch === '@'){
+                else if(ch === '@' || ch === '?'){
+                    var originalCh = ch;
                     //we expect a '{'
                     ch = this.text[++this.index];
                     if(ch !== '{'){
-                        console.error('Expected "{" following "@"');
+                        console.error('Expected "{" following "' + ch + '"');
                         this.index = this.text.length;
                         return { type: 'EOF', token: '' };
                     }
@@ -83,11 +85,10 @@
                     }
 
                     //FIXME error catching
-
-                    return { type: 'DATA', token: output };
+                    return { type: special[originalCh], token: output };
                 }
                 else if(ch === '#'){
-                    while(++this.index < this.text.length && this.text[this.index].match(/[a-zA-Z0-9]+/) !== null){
+                    while(++this.index < this.text.length && this.text[this.index].match(/[a-zA-Z0-9_]+/) !== null){
                         output += this.text[this.index];
                     }
                     

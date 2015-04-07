@@ -45,6 +45,33 @@
         return str.length === 0 ? '' : str.charAt(0).toUpperCase() + str.slice(1);
     }
 
+    var dataMatch = function(nodeData, bibData){
+        var path = nodeData.split('.');
+        var x = dataGetter;
+        var num = -1;
+
+        for(var i = 0; i < path.length; ++i){
+            if(path[i].slice(0,2) === 'au'){
+                var match = path[i].match(/au\[(\d+)\]$/);
+                if(match === null){
+                    console.error('invalid author');
+                }
+                num = parseInt(match[1]);
+                path[i] = 'au';
+            }
+
+            x = x[ path[i] ];
+
+            if(typeof(x) === 'undefined'){
+                return undefined;
+            }
+        }
+
+        //num is only used for the author command. it is otherwise ignored
+        return x(bibData, num);
+
+    };
+
     BT.macros = {};
 
     BT.preprocess = function(str){
@@ -95,6 +122,7 @@
                 cNode = cNode.parent.parent;
             }
             else if(tk.type === 'MACRO'){
+                //FIXME check if macro is defined
                 var n = BT.parse(BT.macros[tk.token]);
                 cNode.children.push(n);
                 n.parent = cNode;
@@ -104,6 +132,9 @@
             }
             else if(tk.type === 'DATA'){
                 cNode.children.push({ parent: cNode, conditional: false, data: tk.token, children: [] });
+            }
+            else if(tk.type === 'HAS_DATA'){
+                cNode.children.push({ parent: cNode, conditional: 'has data', data: tk.token, children: [] });
             }
             else if(tk.type === 'EOF'){
                 break;
@@ -126,7 +157,7 @@
             console.error('Unknown document type');
             return '';
         }
-        return BT.evaluate(BT.parse('#' + data['doctype']), data);
+        return BT.evaluate(BT.parse('#' + data['doctype']), data) + '\n\n';
     };
 
     BT.evaluate = function(root, data){
@@ -134,29 +165,21 @@
             return root; //FIXME
         }
 
-        if(typeof(root.data) !== 'undefined'){
-            var path = root.data.split('.');
-            var x = dataGetter;
-            var num = -1;
-
-            for(var i = 0; i < path.length; ++i){
-                if(path[i].slice(0,2) === 'au'){
-                    var match = path[i].match(/au\[(\d+)\]$/);
-                    if(match === null){
-                        console.error('invalid author');
-                    }
-                    num = parseInt(match[1]);
-                    path[i] = 'au';
-                }
-
-                x = x[ path[i] ];
-                if(typeof(x) === 'undefined'){
-                    return undefined;
-                }
+        if(root.conditional === 'has data'){
+            if(typeof(root.data) === 'undefiend'){
+                throw 'sanity check: impossible';
             }
 
-            //num is only used for the author command. it is otherwise ignored
-            return x(data, num);
+            var dm = dataMatch(root.data, data);
+
+            if(typeof(dm) === 'undefined'){
+                return undefined;
+            }
+            return '';
+        }
+
+        if(typeof(root.data) !== 'undefined'){
+            return dataMatch(root.data, data);
         }
 
         if(root.conditional){

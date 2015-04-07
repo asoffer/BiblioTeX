@@ -10,28 +10,28 @@ var completions = 0;
 var inputData;
 $.ajax({
             type: 'GET',
-            url: 'html.btx',
+            url: 'tex.btx',
             success: function(data, textStatus, request){
                 BiblioTeX.preprocess(data);
                 ++completions;
             }
         });
 
-var jqxhr = $.getJSON( "bib.json", function(data) {
-        console.log( "success" );
+var jqxhr = $.getJSON( 'bib.json', function(data) {
         inputData = data;
         ++completions;
         })
 .done(function() {
-        console.log( "second success" );
+        console.log( 'success' );
         })
 .fail(function( jqxhr, textStatus, error ) {
-    var err = textStatus + ", " + error;
-    console.log( "Request Failed: " + err );
+    var err = textStatus + ', ' + error;
+    console.log( 'Request Failed: ' + err );
 });
 
 </script>
 </head>
 <body>
+<pre></pre>
 </body>
 </html>
